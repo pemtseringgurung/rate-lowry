@@ -16,9 +16,9 @@ export default async function handler(req, res) {
       res.status(200).json(reviews);
     } 
     else if (req.method === 'POST') {
-      const { foodItem, station, rating, content, username } = req.body;
+      const { foodItem, station, rating, comment, reviewer } = req.body;
       
-      if (!foodItem || !station || !rating || !content) {
+      if (!foodItem || !station || !rating || !comment) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
       
@@ -26,9 +26,9 @@ export default async function handler(req, res) {
         foodItem,
         station,
         rating: parseInt(rating),
-        content,
-        username: username || 'Anonymous',
-        createdAt: new Date()
+        comment,
+        reviewer: reviewer || 'Anonymous',
+        date: new Date()
       };
       
       const result = await db.collection('reviews').insertOne(newReview);
