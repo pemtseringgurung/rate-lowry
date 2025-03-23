@@ -92,13 +92,13 @@ export default function HomePage() {
   }, [selectedStation]);
 
   return (
-    <Layout title="Rate Lowry - Food Reviews at Lowry Center" description="Find and rate food items at Lowry Center dining hall">
+    <Layout title="Rate Lowry - Food Reviews at Lowry Cafeteria" description="Find and rate food items at Lowry Cafeteria dining hall">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mb-10 overflow-hidden">
         <div className="p-8 bg-gradient-to-r from-amber-50 to-yellow-50 relative">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
           <div className="relative">
             <h1 className="text-3xl font-bold text-gray-800 mb-3 font-['Plus_Jakarta_Sans']">Find & Rate Food at Lowry</h1>
-            <p className="text-gray-600 mb-8 max-w-2xl">See what others are saying about the food options at Lowry Center and share your own experiences.</p>
+            <p className="text-gray-600 mb-8 max-w-2xl">See what others are saying about the food options at Lowry Cafeteria and share your own experiences.</p>
           </div>
         </div>
         
@@ -179,18 +179,29 @@ export default function HomePage() {
             <Link
               key={`${item.foodItem}-${item.station}`}
               href={`/food/${encodeURIComponent(item.foodItem)}?station=${encodeURIComponent(item.station)}`}
-              className="bg-white rounded-xl border border-gray-100 overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1"
+              className="bg-white rounded-xl border border-gray-100 overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col"
             >
+              <div className="h-48 bg-gray-100 relative overflow-hidden">
+                {item.imageUrl ? (
+                  <img 
+                    src={item.imageUrl}
+                    alt={item.foodItem}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://placehold.co/600x400/f3f4f6/94a3b8?text=${encodeURIComponent(item.foodItem)}`;
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-amber-50">
+                    <span className="text-5xl">{getFoodEmoji(item.foodItem)}</span>
+                  </div>
+                )}
+              </div>
+              
               <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-amber-50 w-14 h-14 flex items-center justify-center rounded-full mr-4">
-                    <span className="text-2xl">{getFoodEmoji(item.foodItem)}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800 font-['Plus_Jakarta_Sans']">{item.foodItem}</h3>
-                    <div className="text-sm text-amber-600">{item.station}</div>
-                  </div>
-                </div>
+                <h3 className="text-xl font-bold text-gray-800 font-['Plus_Jakarta_Sans'] mb-1">{item.foodItem}</h3>
+                <div className="text-amber-600 mb-4">{item.station}</div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">

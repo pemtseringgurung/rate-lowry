@@ -2,8 +2,8 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 export default function Layout({ children, title, description }) {
-  const defaultTitle = 'Rate Lowry - Food Ratings for Lowry Center';
-  const defaultDescription = 'Rate and review food items at Lowry Center dining hall';
+  const defaultTitle = 'Rate Lowry - Food Ratings for Lowry Cafeteria';
+  const defaultDescription = 'Rate and review food items at Lowry Cafeteria dining hall';
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -24,7 +24,7 @@ export default function Layout({ children, title, description }) {
               </div>
               <div>
                 <h1 className="text-white text-2xl font-bold tracking-tight font-['Plus_Jakarta_Sans']">Rate Lowry</h1>
-                <p className="text-white text-xs font-medium opacity-80 tracking-wide">CAMPUS DINING REVIEWS</p>
+                <p className="text-white text-xs font-medium opacity-80 tracking-wide">Rate food in Lowry Cafeteria!</p>
               </div>
             </Link>
             

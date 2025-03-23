@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../components/Layout';
@@ -9,12 +9,17 @@ export default function NewReview() {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState({ loading: false, error: null });
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
+  
   const [formData, setFormData] = useState({
     foodItem: '',
     station: '',
     rating: 3,
     comment: '',
-    reviewer: ''
+    reviewer: '',
+    imageUrl: ''
   });
 
   // Update form data when URL parameters change
@@ -52,6 +57,51 @@ export default function NewReview() {
       ...formData,
       [name]: name === 'rating' ? parseInt(value, 10) : value
     });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Create a preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload the image
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploadStatus({ loading: true, error: null });
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to upload image');
+      }
+
+      const data = await response.json();
+      setFormData(prev => ({ ...prev, imageUrl: data.imageUrl }));
+      setUploadStatus({ loading: false, error: null });
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setUploadStatus({ loading: false, error: error.message });
+    }
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+    setFormData(prev => ({ ...prev, imageUrl: '' }));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -213,6 +263,71 @@ export default function NewReview() {
             </div>
             
             <div>
+              <label className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
+                Add Photo <span className="text-gray-500 font-normal">(optional)</span>
+              </label>
+              <div className="space-y-3">
+                {imagePreview ? (
+                  <div className="relative">
+                    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden p-2">
+                      <img 
+                        src={imagePreview} 
+                        alt="Food preview" 
+                        width="800"
+                        height="600"
+                        className="h-auto w-full object-contain"
+                        style={{ maxWidth: '100%', background: 'white', maxHeight: '400px' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors shadow-md"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center w-full">
+                    <label className="flex flex-col w-full h-48 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg className="w-14 h-14 mb-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <p className="mb-2 text-sm text-gray-700">
+                          <span className="font-semibold">Click to upload a photo</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                      </div>
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  </div>
+                )}
+                
+                {uploadStatus.loading && (
+                  <div className="flex items-center space-x-2 text-amber-600 bg-amber-50 p-3 rounded-lg">
+                    <div className="w-5 h-5 border-2 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+                    <p>Uploading your image...</p>
+                  </div>
+                )}
+                
+                {uploadStatus.error && (
+                  <div className="text-red-600 bg-red-50 p-3 rounded-lg">
+                    <p>Error: {uploadStatus.error}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div>
               <label htmlFor="reviewer" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
                 Your Name <span className="text-gray-500 font-normal">(optional)</span>
               </label>
@@ -230,9 +345,9 @@ export default function NewReview() {
             <div className="flex gap-4 pt-4">
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || uploadStatus.loading}
                 className={`flex-1 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-sm ${
-                  loading ? 'opacity-70 cursor-not-allowed' : ''
+                  (loading || uploadStatus.loading) ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
                 {loading ? (

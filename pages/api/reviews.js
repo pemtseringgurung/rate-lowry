@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       
       res.status(200).json(reviews);
     } else if (req.method === 'POST') {
-      const { foodItem, station, rating, comment, reviewer = "Anonymous" } = req.body;
+      const { foodItem, station, rating, comment, reviewer = "Anonymous", imageUrl = null } = req.body;
       
       // Validate required fields
       if (!foodItem || !station || !rating || !comment) {
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
         rating,
         comment,
         reviewer,
+        imageUrl,
         createdAt: new Date()
       });
       
@@ -49,6 +50,7 @@ export default async function handler(req, res) {
           rating,
           comment,
           reviewer,
+          imageUrl,
           createdAt: new Date()
         }
       });

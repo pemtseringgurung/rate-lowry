@@ -10,6 +10,7 @@ export default function FoodItemPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [avgRating, setAvgRating] = useState(0);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -48,6 +49,14 @@ export default function FoodItemPage() {
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const openImageModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -152,6 +161,26 @@ export default function FoodItemPage() {
             <div className="space-y-6">
               {reviews.map((review) => (
                 <div key={review._id} className="bg-gray-50 p-6 rounded-xl border border-gray-100 transition-all hover:shadow-md">
+                  {review.imageUrl && (
+                    <div className="mb-6">
+                      <div 
+                        className="relative cursor-pointer rounded-lg overflow-hidden border border-gray-200 bg-white h-48"
+                        onClick={() => openImageModal(review.imageUrl)}
+                      >
+                        <img
+                          src={review.imageUrl}
+                          alt="Food review"
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://placehold.co/600x400/f3f4f6/94a3b8?text=Image+Unavailable";
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="flex items-center mb-3">
                     <div className="flex text-amber-500 mr-2 text-xl">
                       {[1, 2, 3, 4, 5].map((star) => (
@@ -178,6 +207,36 @@ export default function FoodItemPage() {
           )}
         </div>
       </div>
+      
+      {/* Image Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4" onClick={closeImageModal}>
+          <div className="relative bg-white p-2 rounded-lg" style={{ maxWidth: '95%', maxHeight: '95vh' }}>
+            <button
+              className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 z-10"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeImageModal();
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+            <img
+              src={selectedImage}
+              alt="Food review large view"
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '85vh', 
+                display: 'block',
+                margin: '0 auto',
+                background: 'white'
+              }}
+            />
+          </div>
+        </div>
+      )}
     </Layout>
   );
 } 

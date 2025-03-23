@@ -20,7 +20,9 @@ export default async function handler(req, res) {
           { $group: { 
               _id: { foodItem: "$foodItem", station: "$station" },
               avgRating: { $avg: "$rating" },
-              reviewCount: { $sum: 1 }
+              reviewCount: { $sum: 1 },
+              // Get the first image URL we find in any review for this food item
+              imageUrl: { $first: "$imageUrl" }
             }
           },
           { $project: {
@@ -28,7 +30,8 @@ export default async function handler(req, res) {
               foodItem: "$_id.foodItem",
               station: "$_id.station",
               avgRating: 1,
-              reviewCount: 1
+              reviewCount: 1,
+              imageUrl: 1
             }
           },
           { $sort: { foodItem: 1 } }
