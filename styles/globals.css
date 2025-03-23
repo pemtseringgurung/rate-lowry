@@ -17,12 +17,32 @@ a {
   box-sizing: border-box;
 }
 
+/* Fix for iOS color scheme issues */
+input, textarea, select {
+  color: #1f2937 !important; /* text-gray-800 */
+}
+
+/* Fix for iOS placeholder colors */
+::placeholder {
+  color: #6b7280 !important; /* text-gray-500 */
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #6b7280 !important; /* text-gray-500 */
+}
+
+::-ms-input-placeholder {
+  color: #6b7280 !important; /* text-gray-500 */
+}
+
+/* Override dark mode */
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
   body {
-    color: white;
-    background: black;
+    color: inherit;
+    background: inherit;
   }
 }

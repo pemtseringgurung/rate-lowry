@@ -31,6 +31,7 @@ export default function Layout({ children, title, description }) {
             <Link 
               href="/new" 
               className="bg-white text-amber-500 hover:text-amber-600 font-medium py-2 px-4 rounded-lg shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5 text-sm font-['Outfit']"
+              style={{ color: "#f59e0b" }}
             >
               + Add Review
             </Link>

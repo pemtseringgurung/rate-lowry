@@ -177,7 +177,7 @@ export default function NewReview() {
                 value={formData.foodItem}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
                 placeholder="e.g., Pizza, Pasta, Salad"
               />
             </div>
@@ -193,19 +193,19 @@ export default function NewReview() {
                   value={formData.station}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none bg-white"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none bg-white text-gray-800"
                 >
-                  <option value="">Select a station</option>
+                  <option value="" className="text-gray-800">Select a station</option>
                   {/* Use hardcoded station options in case the API fails */}
                   {stations.length > 0 ? (
                     stations.map((station) => (
-                      <option key={station._id} value={station.name}>
+                      <option key={station._id} value={station.name} className="text-gray-800">
                         {station.name}
                       </option>
                     ))
                   ) : (
                     ['Garden & Provisions', 'Hearth 66', 'Globe Wooster', 'Lemongrass', 'Zone', 'The Garden', 'The Kitchen Table', 'Mom\'s Kitchen'].map((station) => (
-                      <option key={station} value={station}>
+                      <option key={station} value={station} className="text-gray-800">
                         {station}
                       </option>
                     ))
@@ -257,7 +257,7 @@ export default function NewReview() {
                 onChange={handleChange}
                 required
                 rows="4"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
                 placeholder="How was the food? What did you like or dislike about it?"
               ></textarea>
             </div>
@@ -337,7 +337,7 @@ export default function NewReview() {
                 name="reviewer"
                 value={formData.reviewer}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
                 placeholder="Leave blank to post anonymously"
               />
             </div>
