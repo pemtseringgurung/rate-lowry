@@ -7,19 +7,26 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "init-stations": "node scripts/init-stations.js"
+    "init-stations": "node scripts/init-stations.js",
+    "clear-reviews": "node scripts/clear-reviews.js"
   },
   "dependencies": {
-    "mongodb": "^4.12.1",
-    "next": "13.0.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@tailwindcss/postcss": "^4.0.15",
+    "@types/node": "22.13.11",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
+    "dotenv": "^16.4.7",
+    "eslint": "9.23.0",
+    "eslint-config-next": "15.2.3",
+    "mongodb": "^6.15.0",
+    "next": "15.2.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "typescript": "5.8.2"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "eslint": "8.29.0",
-    "eslint-config-next": "13.0.6",
-    "postcss": "^8.4.19",
-    "tailwindcss": "^3.2.4"
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.15"
   }
 }

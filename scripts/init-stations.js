@@ -1,5 +1,5 @@
 // This script initializes the database with the correct Lowry dining stations
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 // MongoDB connection URI
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/rate_lowry";
@@ -8,6 +8,7 @@ async function initStations() {
   let client;
   
   try {
+    console.log('Connecting to MongoDB...');
     client = new MongoClient(uri);
     await client.connect();
     console.log('Connected to MongoDB');
@@ -29,7 +30,7 @@ async function initStations() {
       { name: 'Globe Wooster', createdAt: new Date() },
       { name: 'Lemongrass', createdAt: new Date() },
       { name: 'Zone', createdAt: new Date() },
-      { name: 'The Graden', createdAt: new Date() },
+      { name: 'The Garden', createdAt: new Date() },
       { name: 'The Kitchen Table', createdAt: new Date() },
       { name: 'Mom\'s Kitchen', createdAt: new Date() }
     ];
@@ -74,7 +75,6 @@ async function initStations() {
       await client.close();
       console.log('MongoDB connection closed');
     }
-    process.exit(0);
   }
 }
 

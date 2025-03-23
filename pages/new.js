@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Layout from '../components/Layout';
 
 export default function NewReview() {
   const router = useRouter();
@@ -57,81 +58,66 @@ export default function NewReview() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+    
     try {
+      // Use "Anonymous" as default if reviewer field is empty
+      const reviewerName = formData.reviewer.trim() || "Anonymous";
+      
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          reviewer: reviewerName,
+          createdAt: new Date()
+        }),
       });
-
+      
       if (!response.ok) {
-        throw new Error('Failed to submit review');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit review');
       }
-
-      router.push('/');
+      
+      // Redirect to the food item page
+      router.push(`/food/${encodeURIComponent(formData.foodItem)}?station=${encodeURIComponent(formData.station)}`);
     } catch (error) {
       console.error('Error submitting review:', error);
-      setError('Failed to submit review. Please try again.');
+      setError(error.message);
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-yellow-500 text-white">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-wrap items-center justify-between">
-            {/* Logo and Name */}
-            <Link href="/" className="flex items-center">
-              <div className="bg-white p-2 rounded-md shadow-sm mr-3 transform transition-all hover:translate-y-[-2px]">
-                <span className="text-2xl">🍴</span>
-              </div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                Rate <span className="text-white border-b-2 border-white/70 pb-0.5">Lowry</span>
-              </h1>
-            </Link>
-
-            {/* Navigation */}
-            <div className="flex items-center space-x-3">
-              <Link href="/" className="font-medium text-white hover:text-white/80 transition-colors px-3 py-2">
-                Home
-              </Link>
+    <Layout title="Add a New Review - Rate Lowry" description="Add a new food review at Lowry dining hall">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 rounded-2xl"></div>
+        <div className="relative">
+          <div className="flex items-center mb-8">
+            <div className="bg-gradient-to-br from-amber-500 to-yellow-400 p-3 rounded-lg shadow-md mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
             </div>
+            <h1 className="text-2xl font-bold text-gray-800 font-['Plus_Jakarta_Sans']">Add a New Review</h1>
           </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-yellow-600 hover:text-yellow-700 font-medium transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
-            </svg>
-            Back to home
-          </Link>
-        </div>
-        
-        <div className="max-w-2xl mx-auto bg-white border border-gray-200 p-6 rounded-md shadow-sm">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-3">
-            Add Your Review
-          </h2>
           
           {error && (
-            <div className="bg-red-50 text-red-600 p-4 rounded-md border-l-4 border-red-400 mb-6 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
+            <div className="bg-red-50 text-red-600 p-4 mb-6 rounded-xl border border-red-100">
+              <div className="flex items-center mb-1">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span className="font-semibold">Error</span>
+              </div>
               <p>{error}</p>
             </div>
           )}
           
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="foodItem" className="block mb-2 font-medium text-gray-700">
+              <label htmlFor="foodItem" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
                 Food Item Name
               </label>
               <input
@@ -141,46 +127,53 @@ export default function NewReview() {
                 value={formData.foodItem}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
                 placeholder="e.g., Pizza, Pasta, Salad"
               />
             </div>
             
             <div>
-              <label htmlFor="station" className="block mb-2 font-medium text-gray-700">
+              <label htmlFor="station" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
                 Food Station
               </label>
-              <select
-                id="station"
-                name="station"
-                value={formData.station}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500 bg-white"
-              >
-                <option value="">Select a station</option>
-                {/* Use hardcoded station options in case the API fails */}
-                {stations.length > 0 ? (
-                  stations.map((station) => (
-                    <option key={station._id} value={station.name}>
-                      {station.name}
-                    </option>
-                  ))
-                ) : (
-                  ['Garden & Provisions', 'Hearth 66', 'Globe Wooster', 'Lemongrass', 'Zone', 'The Graden', 'The Kitchen Table', 'Mom\'s Kitchen'].map((station) => (
-                    <option key={station} value={station}>
-                      {station}
-                    </option>
-                  ))
-                )}
-              </select>
+              <div className="relative">
+                <select
+                  id="station"
+                  name="station"
+                  value={formData.station}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none bg-white"
+                >
+                  <option value="">Select a station</option>
+                  {/* Use hardcoded station options in case the API fails */}
+                  {stations.length > 0 ? (
+                    stations.map((station) => (
+                      <option key={station._id} value={station.name}>
+                        {station.name}
+                      </option>
+                    ))
+                  ) : (
+                    ['Garden & Provisions', 'Hearth 66', 'Globe Wooster', 'Lemongrass', 'Zone', 'The Garden', 'The Kitchen Table', 'Mom\'s Kitchen'].map((station) => (
+                      <option key={station} value={station}>
+                        {station}
+                      </option>
+                    ))
+                  )}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
             </div>
             
             <div>
-              <span className="block mb-2 font-medium text-gray-700">
+              <span className="block mb-3 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
                 Your Rating
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {[1, 2, 3, 4, 5].map((value) => (
                   <label key={value} className="cursor-pointer">
                     <input
@@ -191,24 +184,20 @@ export default function NewReview() {
                       onChange={handleChange}
                       className="sr-only"
                     />
-                    <div className={`flex items-center justify-center w-10 h-10 text-lg font-bold transition-all ${
+                    <div className={`flex items-center justify-center w-12 h-12 text-lg font-bold transition-all rounded-full ${
                       formData.rating === value 
-                        ? 'bg-yellow-500 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    } rounded-md`}>
+                        ? 'bg-gradient-to-br from-amber-500 to-yellow-400 text-white ring-2 ring-amber-300 ring-offset-2'
+                        : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                    }`}>
                       {value}
                     </div>
                   </label>
                 ))}
               </div>
-              <div className="mt-1 text-sm text-gray-500 flex justify-between">
-                <span>Poor</span>
-                <span>Excellent</span>
-              </div>
             </div>
             
             <div>
-              <label htmlFor="comment" className="block mb-2 font-medium text-gray-700">
+              <label htmlFor="comment" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
                 Your Comment
               </label>
               <textarea
@@ -218,14 +207,14 @@ export default function NewReview() {
                 onChange={handleChange}
                 required
                 rows="4"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
-                placeholder="Share your thoughts about this food item..."
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                placeholder="How was the food? What did you like or dislike about it?"
               ></textarea>
             </div>
             
             <div>
-              <label htmlFor="reviewer" className="block mb-2 font-medium text-gray-700">
-                Your Name (Optional)
+              <label htmlFor="reviewer" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
+                Your Name <span className="text-gray-500 font-normal">(optional)</span>
               </label>
               <input
                 type="text"
@@ -233,43 +222,36 @@ export default function NewReview() {
                 name="reviewer"
                 value={formData.reviewer}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
-                placeholder="Anonymous"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                placeholder="Leave blank to post anonymously"
               />
             </div>
             
-            <div className="flex justify-end space-x-3 pt-3 border-t">
-              <Link
-                href="/"
-                className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md font-medium hover:bg-gray-200 transition-all"
-              >
-                Cancel
-              </Link>
+            <div className="flex gap-4 pt-4">
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md font-medium transition-all disabled:opacity-50"
+                className={`flex-1 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-sm ${
+                  loading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
               >
                 {loading ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
                     Submitting...
-                  </span>
+                  </div>
                 ) : 'Submit Review'}
               </button>
+              <Link
+                href="/"
+                className="flex-1 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg transition-all text-center border border-gray-200"
+              >
+                Cancel
+              </Link>
             </div>
           </form>
         </div>
-      </main>
-      
-      <footer className="bg-yellow-500 text-white py-4 mt-10">
-        <div className="container mx-auto px-4 text-center">
-          <p className="font-medium">&copy; {new Date().getFullYear()}</p>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </Layout>
   );
 } 

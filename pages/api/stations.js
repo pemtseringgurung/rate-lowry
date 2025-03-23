@@ -29,4 +29,4 @@ export default async function handler(req, res) {
     console.error('Error processing request:', error);
     res.status(500).json({ error: 'An error occurred' });
   }
-}
+} 
