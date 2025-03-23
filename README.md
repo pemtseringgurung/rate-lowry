@@ -1,34 +1,125 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Rate Lowry - Food Review App
 
-## Getting Started
+## Overview
+A modern web application designed to help College of Wooster students rate and review food at Lowry Cafeteria. This interactive platform allows users to browse food items by station, submit reviews with photos, and share their dining experiences.
 
-First, run the development server:
+## Key Features
 
+### Food Rating System
+- Browse food items by station
+- View average ratings for each food item
+- Read detailed reviews from other users
+- Submit your own ratings on a scale of 1-5
+
+### Photo Reviews
+- Upload food photos using Cloudinary integration
+- View image previews before submission
+- Browse food items with their associated photos
+- View full-size images in a modal display
+
+### User Interface
+- Modern yellow and white theme
+- Clean, intuitive card-based design
+- Responsive layout for mobile and desktop
+- Station-based navigation
+
+### Review Management
+- Add reviews for any food item
+- Include optional reviewer name
+- Add comments and star ratings
+- Browse all reviews for a specific food item
+
+## Technical Stack
+- Next.js for server-side rendering
+- MongoDB for database
+- Cloudinary for image storage and optimization
+- Tailwind CSS for styling
+- Vercel for deployment
+
+## Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
+git clone https://github.com/yourusername/rate-lowry.git
+cd rate-lowry
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. Create a `.env.local` file with the following variables:
+```
+MONGODB_URI=your_mongodb_connection_string
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+5. Open your browser and navigate to `http://localhost:3000`
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+The application is deployed on Vercel. To deploy your own instance:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to a GitHub repository
+2. Import the repository in the Vercel dashboard
+3. Add the environment variables in Vercel's project settings
+4. Deploy the application
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+### Adding a Review
+1. Navigate to the homepage
+2. Select a station or browse "All Stations"
+3. Click on a food item or "Add New Review" button
+4. Fill out the review form, including an optional photo
+5. Submit the review
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Browsing Reviews
+1. Navigate to the homepage
+2. Select a station to filter food items
+3. Click on a food item to see all its reviews
+4. View photos by clicking on them to open the modal
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Development Commands
+```bash
+npm run dev    # Start development server
+npm run build  # Build for production
+npm run start  # Run production build locally
+```
+
+## Features Implementation Details
+
+### Image Integration
+- Images are uploaded to Cloudinary for storage and optimization
+- Automatic image resizing and quality adjustment
+- Lazy loading for better performance
+- Fallback display for unavailable images
+
+### Review System
+- MongoDB storage for reviews
+- Star-based rating system (1-5 stars)
+- Optional reviewer name field
+- Timestamp tracking for all reviews
+
+### UI Components
+- Card-based design for food items
+- Modal display for enlarged images
+- Station-based navigation tabs
+- Loading state indicators
+
+## Future Enhancements
+- User authentication system
+- Reply to reviews functionality
+- Advanced sorting and filtering options
+- Nutritional information integration
+- Favorite food items feature
+- Weekly menu predictions
+- Mobile app version
