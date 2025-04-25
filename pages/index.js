@@ -79,7 +79,7 @@ export default function HomePage() {
         }
         
         const data = await response.json();
-        setFoodItems(data);
+        setFoodItems(data.foodItems || []); // Access the foodItems property from the response
         setLoading(false);
       } catch (error) {
         console.error('Error fetching food items:', error);

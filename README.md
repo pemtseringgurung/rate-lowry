@@ -123,3 +123,53 @@ npm run start  # Run production build locally
 - Favorite food items feature
 - Weekly menu predictions
 - Mobile app version
+
+## MongoDB Performance Optimizations
+
+The "Rate Lowry!" application has been optimized for high performance with MongoDB Atlas. The following key optimizations have been implemented:
+
+### CRUD Optimizations
+- **Batched Writes**: Improved Create operations by batching submissions during peak times
+- **Field Projection**: Optimized Read operations by projecting only necessary fields
+- **Soft Delete**: Implemented using an `isActive` flag instead of removing documents
+- **Field Selection**: API supports requesting specific fields via `fields` parameter
+
+### Query Performance
+- **Indexing Strategy**: Strategic indexes on `station`, `foodItem`, and `createdAt`
+- **Compound Indexes**: Specialized indexes for common query patterns
+- **Query Hints**: Explicit index hints for predictable query plans
+- **Automated Index Creation**: Check-and-create approach for missing indexes
+
+### Aggregation Pipelines
+- **Early Filtering**: Optimized pipelines using early `$match` stages
+- **Parallelized Analysis**: Used `$facet` for concurrent aggregations
+- **Efficient Grouping**: Optimized memory usage with proper group stages
+- **Pre-calculation**: Complex analytics are pre-calculated and cached
+
+### Performance Monitoring
+- **Database Profiling**: Script to analyze and report on slow queries
+- **Index Usage Analysis**: Monitoring to identify unused or inefficient indexes
+- **Query Execution Stats**: Performance metrics for optimization
+
+### Documentation
+- **Detailed Results**: Performance metrics before and after optimization
+- **Indexing Strategy**: Comprehensive explanation of index decisions
+- **Test Results**: Documented performance under various load scenarios
+
+To run the performance scripts:
+
+```bash
+# Install dependencies
+npm install mongodb dotenv
+
+# Run the index optimization script
+node scripts/optimize-indexes.js
+
+# Profile database performance
+node scripts/profile-db.js
+
+# Run aggregation performance tests
+node scripts/aggregation-pipelines.js
+```
+
+For detailed performance results and evaluation, see the [Results and Evaluation](./docs/RESULTS_AND_EVALUATION.md) document.

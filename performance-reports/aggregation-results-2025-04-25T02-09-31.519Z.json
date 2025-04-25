@@ -1,0 +1,160 @@
+{
+  "executionTimes": {
+    "basic": 32,
+    "optimized": 46,
+    "station": 28,
+    "distribution": 31,
+    "recent": 28,
+    "commonRatings": 47
+  },
+  "basicAggregation": [
+    {
+      "reviewCount": 1,
+      "foodItem": "Pizza",
+      "station": "Hearth 66",
+      "averageRating": 5
+    },
+    {
+      "reviewCount": 2700,
+      "foodItem": "Test Pizza",
+      "station": "Italian",
+      "averageRating": 4
+    },
+    {
+      "reviewCount": 1,
+      "foodItem": "Wonton Pork Soup",
+      "station": "Lemongrass",
+      "averageRating": 5
+    }
+  ],
+  "optimizedAggregation": [
+    {
+      "reviewCount": 1,
+      "foodItem": "Pizza",
+      "station": "Hearth 66",
+      "averageRating": 5
+    },
+    {
+      "reviewCount": 2700,
+      "foodItem": "Test Pizza",
+      "station": "Italian",
+      "averageRating": 4
+    }
+  ],
+  "stationAnalytics": [
+    {
+      "totalReviews": 2700,
+      "station": "Italian",
+      "averageRating": 4,
+      "daysActive": 0,
+      "foodItemCount": 1
+    },
+    {
+      "totalReviews": 1,
+      "station": "Hearth 66",
+      "averageRating": 5,
+      "daysActive": 0,
+      "foodItemCount": 1
+    },
+    {
+      "totalReviews": 1,
+      "station": "Lemongrass",
+      "averageRating": 5,
+      "daysActive": 0,
+      "foodItemCount": 1
+    }
+  ],
+  "ratingDistribution": {
+    "overall": [
+      {
+        "_id": 4,
+        "count": 2700
+      },
+      {
+        "_id": 5,
+        "count": 2
+      }
+    ],
+    "byStation": [
+      {
+        "_id": "Italian",
+        "ratings": [
+          {
+            "rating": 4,
+            "count": 2700
+          }
+        ],
+        "totalCount": 2700
+      },
+      {
+        "_id": "Lemongrass",
+        "ratings": [
+          {
+            "rating": 5,
+            "count": 1
+          }
+        ],
+        "totalCount": 1
+      },
+      {
+        "_id": "Hearth 66",
+        "ratings": [
+          {
+            "rating": 5,
+            "count": 1
+          }
+        ],
+        "totalCount": 1
+      }
+    ],
+    "byMonth": [
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 5
+        },
+        "count": 1
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 4
+        },
+        "count": 2700
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 5
+        },
+        "count": 1
+      }
+    ]
+  },
+  "recentReviews": [
+    {
+      "count": 2700,
+      "date": "2025-04-23",
+      "avgRating": 4,
+      "stationCount": 1
+    }
+  ],
+  "commonRatings": [
+    {
+      "ratings": [
+        {
+          "rating": 4,
+          "count": 2700
+        }
+      ],
+      "totalReviews": 2700,
+      "foodItem": "Test Pizza",
+      "station": "Italian",
+      "mostCommonRating": 4,
+      "mostCommonCount": 2700
+    }
+  ]
+}

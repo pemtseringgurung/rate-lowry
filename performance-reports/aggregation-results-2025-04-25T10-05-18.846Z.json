@@ -1,0 +1,926 @@
+{
+  "executionTimes": {
+    "basic": 45,
+    "optimized": 42,
+    "station": 50,
+    "distribution": 66,
+    "recent": 30,
+    "commonRatings": 69
+  },
+  "basicAggregation": [
+    {
+      "reviewCount": 482,
+      "foodItem": "Burger",
+      "station": "Main Line",
+      "averageRating": 3.1
+    },
+    {
+      "reviewCount": 495,
+      "foodItem": "Chicken Tenders",
+      "station": "Pizza",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 500,
+      "foodItem": "Curry",
+      "station": "Salad Bar",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 498,
+      "foodItem": "Fries",
+      "station": "Grill",
+      "averageRating": 3.1
+    },
+    {
+      "reviewCount": 503,
+      "foodItem": "Ice Cream",
+      "station": "Dessert",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 496,
+      "foodItem": "Pancakes",
+      "station": "Dessert",
+      "averageRating": 2.9
+    },
+    {
+      "reviewCount": 503,
+      "foodItem": "Pasta",
+      "station": "Deli",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 491,
+      "foodItem": "Pizza",
+      "station": "Grill",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 1,
+      "foodItem": "Pizza",
+      "station": "Hearth 66",
+      "averageRating": 5
+    },
+    {
+      "reviewCount": 495,
+      "foodItem": "Salad",
+      "station": "Pizza",
+      "averageRating": 3
+    }
+  ],
+  "optimizedAggregation": [
+    {
+      "reviewCount": 159,
+      "foodItem": "Burger",
+      "station": "Main Line",
+      "averageRating": 3.1
+    },
+    {
+      "reviewCount": 163,
+      "foodItem": "Chicken Tenders",
+      "station": "Pizza",
+      "averageRating": 2.9
+    },
+    {
+      "reviewCount": 172,
+      "foodItem": "Curry",
+      "station": "Salad Bar",
+      "averageRating": 2.8
+    },
+    {
+      "reviewCount": 162,
+      "foodItem": "Fries",
+      "station": "Grill",
+      "averageRating": 3.1
+    },
+    {
+      "reviewCount": 166,
+      "foodItem": "Ice Cream",
+      "station": "Dessert",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 164,
+      "foodItem": "Pancakes",
+      "station": "Dessert",
+      "averageRating": 2.9
+    },
+    {
+      "reviewCount": 169,
+      "foodItem": "Pasta",
+      "station": "Deli",
+      "averageRating": 3
+    },
+    {
+      "reviewCount": 164,
+      "foodItem": "Pizza",
+      "station": "Grill",
+      "averageRating": 2.9
+    },
+    {
+      "reviewCount": 1,
+      "foodItem": "Pizza",
+      "station": "Hearth 66",
+      "averageRating": 5
+    },
+    {
+      "reviewCount": 165,
+      "foodItem": "Salad",
+      "station": "Pizza",
+      "averageRating": 3
+    }
+  ],
+  "stationAnalytics": [
+    {
+      "totalReviews": 2700,
+      "station": "Italian",
+      "averageRating": 4,
+      "daysActive": 0,
+      "foodItemCount": 1
+    },
+    {
+      "totalReviews": 999,
+      "station": "Dessert",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 995,
+      "station": "Deli",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 990,
+      "station": "International",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 990,
+      "station": "Pizza",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 989,
+      "station": "Grill",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 988,
+      "station": "Salad Bar",
+      "averageRating": 3,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 969,
+      "station": "Main Line",
+      "averageRating": 3.1,
+      "daysActive": 89,
+      "foodItemCount": 2
+    },
+    {
+      "totalReviews": 1,
+      "station": "Hearth 66",
+      "averageRating": 5,
+      "daysActive": 0,
+      "foodItemCount": 1
+    },
+    {
+      "totalReviews": 1,
+      "station": "Lemongrass",
+      "averageRating": 5,
+      "daysActive": 0,
+      "foodItemCount": 1
+    }
+  ],
+  "ratingDistribution": {
+    "overall": [
+      {
+        "_id": 1,
+        "count": 1403
+      },
+      {
+        "_id": 2,
+        "count": 1368
+      },
+      {
+        "_id": 3,
+        "count": 1430
+      },
+      {
+        "_id": 4,
+        "count": 4051
+      },
+      {
+        "_id": 5,
+        "count": 1370
+      }
+    ],
+    "byStation": [
+      {
+        "_id": "Italian",
+        "ratings": [
+          {
+            "rating": 4,
+            "count": 2700
+          }
+        ],
+        "totalCount": 2700
+      },
+      {
+        "_id": "Dessert",
+        "ratings": [
+          {
+            "rating": 1,
+            "count": 207
+          },
+          {
+            "rating": 5,
+            "count": 187
+          },
+          {
+            "rating": 3,
+            "count": 212
+          },
+          {
+            "rating": 2,
+            "count": 192
+          },
+          {
+            "rating": 4,
+            "count": 201
+          }
+        ],
+        "totalCount": 999
+      },
+      {
+        "_id": "Deli",
+        "ratings": [
+          {
+            "rating": 3,
+            "count": 199
+          },
+          {
+            "rating": 2,
+            "count": 202
+          },
+          {
+            "rating": 5,
+            "count": 185
+          },
+          {
+            "rating": 4,
+            "count": 202
+          },
+          {
+            "rating": 1,
+            "count": 207
+          }
+        ],
+        "totalCount": 995
+      },
+      {
+        "_id": "Pizza",
+        "ratings": [
+          {
+            "rating": 4,
+            "count": 198
+          },
+          {
+            "rating": 3,
+            "count": 206
+          },
+          {
+            "rating": 5,
+            "count": 189
+          },
+          {
+            "rating": 1,
+            "count": 205
+          },
+          {
+            "rating": 2,
+            "count": 192
+          }
+        ],
+        "totalCount": 990
+      },
+      {
+        "_id": "International",
+        "ratings": [
+          {
+            "rating": 3,
+            "count": 196
+          },
+          {
+            "rating": 2,
+            "count": 203
+          },
+          {
+            "rating": 1,
+            "count": 206
+          },
+          {
+            "rating": 4,
+            "count": 192
+          },
+          {
+            "rating": 5,
+            "count": 193
+          }
+        ],
+        "totalCount": 990
+      },
+      {
+        "_id": "Grill",
+        "ratings": [
+          {
+            "rating": 3,
+            "count": 190
+          },
+          {
+            "rating": 2,
+            "count": 207
+          },
+          {
+            "rating": 5,
+            "count": 204
+          },
+          {
+            "rating": 1,
+            "count": 191
+          },
+          {
+            "rating": 4,
+            "count": 197
+          }
+        ],
+        "totalCount": 989
+      },
+      {
+        "_id": "Salad Bar",
+        "ratings": [
+          {
+            "rating": 3,
+            "count": 207
+          },
+          {
+            "rating": 2,
+            "count": 192
+          },
+          {
+            "rating": 1,
+            "count": 205
+          },
+          {
+            "rating": 5,
+            "count": 201
+          },
+          {
+            "rating": 4,
+            "count": 183
+          }
+        ],
+        "totalCount": 988
+      },
+      {
+        "_id": "Main Line",
+        "ratings": [
+          {
+            "rating": 3,
+            "count": 220
+          },
+          {
+            "rating": 5,
+            "count": 209
+          },
+          {
+            "rating": 2,
+            "count": 180
+          },
+          {
+            "rating": 4,
+            "count": 178
+          },
+          {
+            "rating": 1,
+            "count": 182
+          }
+        ],
+        "totalCount": 969
+      },
+      {
+        "_id": "Hearth 66",
+        "ratings": [
+          {
+            "rating": 5,
+            "count": 1
+          }
+        ],
+        "totalCount": 1
+      },
+      {
+        "_id": "Lemongrass",
+        "ratings": [
+          {
+            "rating": 5,
+            "count": 1
+          }
+        ],
+        "totalCount": 1
+      }
+    ],
+    "byMonth": [
+      {
+        "_id": {
+          "year": 2025,
+          "month": 1,
+          "rating": 1
+        },
+        "count": 84
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 1,
+          "rating": 2
+        },
+        "count": 90
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 1,
+          "rating": 3
+        },
+        "count": 99
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 1,
+          "rating": 4
+        },
+        "count": 84
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 1,
+          "rating": 5
+        },
+        "count": 100
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 2,
+          "rating": 1
+        },
+        "count": 451
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 2,
+          "rating": 2
+        },
+        "count": 417
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 2,
+          "rating": 3
+        },
+        "count": 456
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 2,
+          "rating": 4
+        },
+        "count": 398
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 2,
+          "rating": 5
+        },
+        "count": 424
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 1
+        },
+        "count": 482
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 2
+        },
+        "count": 472
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 3
+        },
+        "count": 493
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 4
+        },
+        "count": 474
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 3,
+          "rating": 5
+        },
+        "count": 474
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 1
+        },
+        "count": 386
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 2
+        },
+        "count": 389
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 3
+        },
+        "count": 382
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 4
+        },
+        "count": 3095
+      },
+      {
+        "_id": {
+          "year": 2025,
+          "month": 4,
+          "rating": 5
+        },
+        "count": 372
+      }
+    ]
+  },
+  "recentReviews": [
+    {
+      "count": 77,
+      "date": "2025-04-19",
+      "avgRating": 2.9,
+      "stationCount": 7
+    },
+    {
+      "count": 77,
+      "date": "2025-04-20",
+      "avgRating": 2.8,
+      "stationCount": 7
+    },
+    {
+      "count": 75,
+      "date": "2025-04-21",
+      "avgRating": 3.1,
+      "stationCount": 7
+    },
+    {
+      "count": 77,
+      "date": "2025-04-22",
+      "avgRating": 3.1,
+      "stationCount": 7
+    },
+    {
+      "count": 2777,
+      "date": "2025-04-23",
+      "avgRating": 4,
+      "stationCount": 8
+    },
+    {
+      "count": 80,
+      "date": "2025-04-24",
+      "avgRating": 3,
+      "stationCount": 7
+    },
+    {
+      "count": 79,
+      "date": "2025-04-25",
+      "avgRating": 3.1,
+      "stationCount": 7
+    }
+  ],
+  "commonRatings": [
+    {
+      "ratings": [
+        {
+          "rating": 4,
+          "count": 2700
+        }
+      ],
+      "totalReviews": 2700,
+      "foodItem": "Test Pizza",
+      "station": "Italian",
+      "mostCommonRating": 4,
+      "mostCommonCount": 2700
+    },
+    {
+      "ratings": [
+        {
+          "rating": 2,
+          "count": 105
+        },
+        {
+          "rating": 5,
+          "count": 95
+        },
+        {
+          "rating": 4,
+          "count": 102
+        },
+        {
+          "rating": 3,
+          "count": 99
+        },
+        {
+          "rating": 1,
+          "count": 102
+        }
+      ],
+      "totalReviews": 503,
+      "foodItem": "Pasta",
+      "station": "Deli",
+      "mostCommonRating": 2,
+      "mostCommonCount": 105
+    },
+    {
+      "ratings": [
+        {
+          "rating": 5,
+          "count": 97
+        },
+        {
+          "rating": 1,
+          "count": 92
+        },
+        {
+          "rating": 2,
+          "count": 97
+        },
+        {
+          "rating": 4,
+          "count": 105
+        },
+        {
+          "rating": 3,
+          "count": 112
+        }
+      ],
+      "totalReviews": 503,
+      "foodItem": "Ice Cream",
+      "station": "Dessert",
+      "mostCommonRating": 3,
+      "mostCommonCount": 112
+    },
+    {
+      "ratings": [
+        {
+          "rating": 4,
+          "count": 84
+        },
+        {
+          "rating": 1,
+          "count": 100
+        },
+        {
+          "rating": 2,
+          "count": 98
+        },
+        {
+          "rating": 5,
+          "count": 104
+        },
+        {
+          "rating": 3,
+          "count": 114
+        }
+      ],
+      "totalReviews": 500,
+      "foodItem": "Curry",
+      "station": "Salad Bar",
+      "mostCommonRating": 3,
+      "mostCommonCount": 114
+    },
+    {
+      "ratings": [
+        {
+          "rating": 1,
+          "count": 110
+        },
+        {
+          "rating": 5,
+          "count": 93
+        },
+        {
+          "rating": 3,
+          "count": 88
+        },
+        {
+          "rating": 4,
+          "count": 106
+        },
+        {
+          "rating": 2,
+          "count": 101
+        }
+      ],
+      "totalReviews": 498,
+      "foodItem": "Stir Fry",
+      "station": "International",
+      "mostCommonRating": 1,
+      "mostCommonCount": 110
+    },
+    {
+      "ratings": [
+        {
+          "rating": 5,
+          "count": 108
+        },
+        {
+          "rating": 3,
+          "count": 98
+        },
+        {
+          "rating": 4,
+          "count": 100
+        },
+        {
+          "rating": 2,
+          "count": 96
+        },
+        {
+          "rating": 1,
+          "count": 96
+        }
+      ],
+      "totalReviews": 498,
+      "foodItem": "Fries",
+      "station": "Grill",
+      "mostCommonRating": 5,
+      "mostCommonCount": 108
+    },
+    {
+      "ratings": [
+        {
+          "rating": 3,
+          "count": 100
+        },
+        {
+          "rating": 5,
+          "count": 90
+        },
+        {
+          "rating": 2,
+          "count": 95
+        },
+        {
+          "rating": 1,
+          "count": 115
+        },
+        {
+          "rating": 4,
+          "count": 96
+        }
+      ],
+      "totalReviews": 496,
+      "foodItem": "Pancakes",
+      "station": "Dessert",
+      "mostCommonRating": 1,
+      "mostCommonCount": 115
+    },
+    {
+      "ratings": [
+        {
+          "rating": 2,
+          "count": 101
+        },
+        {
+          "rating": 1,
+          "count": 102
+        },
+        {
+          "rating": 5,
+          "count": 100
+        },
+        {
+          "rating": 4,
+          "count": 84
+        },
+        {
+          "rating": 3,
+          "count": 108
+        }
+      ],
+      "totalReviews": 495,
+      "foodItem": "Chicken Tenders",
+      "station": "Pizza",
+      "mostCommonRating": 3,
+      "mostCommonCount": 108
+    },
+    {
+      "ratings": [
+        {
+          "rating": 3,
+          "count": 98
+        },
+        {
+          "rating": 1,
+          "count": 103
+        },
+        {
+          "rating": 4,
+          "count": 114
+        },
+        {
+          "rating": 5,
+          "count": 89
+        },
+        {
+          "rating": 2,
+          "count": 91
+        }
+      ],
+      "totalReviews": 495,
+      "foodItem": "Salad",
+      "station": "Pizza",
+      "mostCommonRating": 4,
+      "mostCommonCount": 114
+    },
+    {
+      "ratings": [
+        {
+          "rating": 5,
+          "count": 100
+        },
+        {
+          "rating": 2,
+          "count": 102
+        },
+        {
+          "rating": 4,
+          "count": 86
+        },
+        {
+          "rating": 3,
+          "count": 108
+        },
+        {
+          "rating": 1,
+          "count": 96
+        }
+      ],
+      "totalReviews": 492,
+      "foodItem": "Sandwich",
+      "station": "International",
+      "mostCommonRating": 3,
+      "mostCommonCount": 108
+    }
+  ]
+}
