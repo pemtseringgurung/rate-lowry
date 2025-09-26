@@ -1,5 +1,8 @@
 import clientPromise from '../../lib/mongodb';
 
+// Fallback data for when MongoDB is not available (empty for fresh start)
+const fallbackFoodItems = [];
+
 // Simple in-memory cache with TTL
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minute cache TTL
@@ -36,58 +39,66 @@ export default async function handler(req, res) {
         }
       }
       
-      // Connect to database
-      const client = await clientPromise;
-      const db = client.db('rate_lowry');
+      let responseData;
       
-      // Build query that only includes active reviews
-      let query = { isActive: { $ne: false } };
-      
-      if (station && station !== 'all') {
-        query.station = station;
+      try {
+        // Connect to database
+        const client = await clientPromise;
+        const db = client.db('rate_lowry');
+        
+        // Build query that only includes active reviews
+        let query = { isActive: { $ne: false } };
+        
+        if (station && station !== 'all') {
+          query.station = station;
+        }
+        
+        // Get unique food items and their average ratings
+        const foodItems = await db.collection('reviews')
+          .aggregate([
+            { $match: query },
+            { $group: { 
+                _id: { foodItem: "$foodItem", station: "$station" },
+                avgRating: { $avg: "$rating" },
+                reviewCount: { $sum: 1 },
+                latestImage: { $max: { 
+                  $cond: [
+                    { $ne: ["$imageUrl", null] },
+                    { image: "$imageUrl", date: "$createdAt" },
+                    null
+                  ]
+                }}
+              }
+            },
+            { $project: {
+                _id: 0,
+                foodItem: "$_id.foodItem",
+                station: "$_id.station",
+                avgRating: { $round: ["$avgRating", 1] },
+                reviewCount: 1,
+                imageUrl: "$latestImage.image"
+              }
+            },
+            { $sort: { reviewCount: -1, avgRating: -1 } }
+          ]).toArray();
+        
+        responseData = {
+          foodItems: foodItems.length > 0 ? foodItems : (station && station !== 'all' ? fallbackFoodItems.filter(item => item.station === station) : fallbackFoodItems),
+          total: foodItems.length > 0 ? foodItems.length : fallbackFoodItems.length,
+          generatedAt: new Date().toISOString()
+        };
+      } catch (dbError) {
+        console.log('MongoDB not available, using fallback data');
+        const filteredItems = station && station !== 'all' 
+          ? fallbackFoodItems.filter(item => item.station === station)
+          : fallbackFoodItems;
+        
+        responseData = {
+          foodItems: filteredItems,
+          total: filteredItems.length,
+          generatedAt: new Date().toISOString()
+        };
       }
-      
-      // Get unique food items and their average ratings
-      // Use hint to leverage the indexes we'll create
-      const foodItems = await db.collection('reviews')
-        .aggregate([
-          { $match: query },
-          { $group: { 
-              _id: { foodItem: "$foodItem", station: "$station" },
-              avgRating: { $avg: "$rating" },
-              reviewCount: { $sum: 1 },
-              // Get the most recent image URL to represent this food item
-              // This is more efficient than $first which is non-deterministic
-              latestImage: { $max: { 
-                $cond: [
-                  { $ne: ["$imageUrl", null] },
-                  { image: "$imageUrl", date: "$createdAt" },
-                  null
-                ]
-              }}
-            }
-          },
-          { $project: {
-              _id: 0,
-              foodItem: "$_id.foodItem",
-              station: "$_id.station",
-              avgRating: { $round: ["$avgRating", 1] }, // Round to 1 decimal place
-              reviewCount: 1,
-              imageUrl: "$latestImage.image"
-            }
-          },
-          { $sort: { reviewCount: -1, avgRating: -1 } } // Sort by popularity & rating
-        ], {
-          // Hint to use the station and isActive indexes
-          hint: { station: 1, isActive: 1 }
-        }).toArray();
-      
-      // Calculate response time for metrics
-      const responseData = {
-        foodItems,
-        total: foodItems.length,
-        generatedAt: new Date().toISOString()
-      };
       
       // Store in cache
       if (useCache) {

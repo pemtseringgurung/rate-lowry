@@ -10,8 +10,10 @@ export default function Layout({ children, title, description }) {
       <Head>
         <title>{title || defaultTitle}</title>
         <meta name="description" content={description || defaultDescription} />
-        <link rel="icon" href="/favicon.ico" />
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link rel="icon" href="/favicon.ico?v=2" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo.png?v=2" />
+        <link rel="shortcut icon" href="/favicon.ico?v=2" />
+        <link rel="apple-touch-icon" href="/logo.png?v=2" />
       </Head>
       
       <header className="bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 py-6 relative">
@@ -19,8 +21,17 @@ export default function Layout({ children, title, description }) {
         <div className="container mx-auto px-6 relative">
           <div className="flex items-center justify-between">
             <Link href="/" className="group flex items-center">
-              <div className="bg-white p-2 rounded-lg shadow-md mr-3 transform group-hover:rotate-6 transition-all duration-300">
-                <span className="text-3xl">🍽️</span>
+              <div className="mr-3">
+                <img 
+                  src="/logo.png" 
+                  alt="Rate Lowry Logo" 
+                  className="w-10 h-10 object-contain"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'inline';
+                  }}
+                />
+                <span className="text-3xl" style={{display: 'none'}}>🍽️</span>
               </div>
               <div>
                 <h1 className="text-white text-2xl font-bold tracking-tight font-['Plus_Jakarta_Sans']">Rate Lowry</h1>
