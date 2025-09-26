@@ -14,6 +14,9 @@ export default function Layout({ children, title, description }) {
         <link rel="icon" type="image/png" sizes="32x32" href="/logo.png?v=2" />
         <link rel="shortcut icon" href="/favicon.ico?v=2" />
         <link rel="apple-touch-icon" href="/logo.png?v=2" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
       
       <header className="bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 py-6 relative">
