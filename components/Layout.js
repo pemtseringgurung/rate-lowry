@@ -19,32 +19,32 @@ export default function Layout({ children, title, description }) {
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </Head>
 
-      <header className="bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 py-6 relative shadow-lg">
+      <header className="bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 py-3 relative shadow-lg">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
         <div className="container mx-auto px-6 relative">
           <div className="flex items-center justify-between">
             <Link href="/" className="group flex items-center transition-transform hover:scale-105 duration-200">
-              <div className="mr-3 bg-white/20 p-2 rounded-xl backdrop-blur-sm shadow-sm">
+              <div className="mr-3 bg-white/20 p-1.5 rounded-xl backdrop-blur-sm shadow-sm">
                 <img
                   src="/logo.png"
                   alt="Rate Lowry Logo"
-                  className="w-10 h-10 object-contain drop-shadow-md"
+                  className="w-8 h-8 object-contain drop-shadow-md"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextSibling.style.display = 'inline';
                   }}
                 />
-                <span className="text-3xl" style={{ display: 'none' }}>🍽️</span>
+                <span className="text-2xl" style={{ display: 'none' }}>🍽️</span>
               </div>
               <div>
-                <h1 className="text-white text-2xl font-bold tracking-tight font-['Plus_Jakarta_Sans'] drop-shadow-sm">Rate Lowry</h1>
-                <p className="text-white text-xs font-medium opacity-90 tracking-wide">Rate food in Lowry Cafeteria!</p>
+                <h1 className="text-white text-xl font-bold tracking-tight font-['Plus_Jakarta_Sans'] drop-shadow-sm">Rate Lowry</h1>
+                <p className="text-white text-[10px] font-medium opacity-90 tracking-wide">Rate food in Lowry Cafeteria!</p>
               </div>
             </Link>
 
             <Link
               href="/new"
-              className="bg-white text-amber-600 hover:text-amber-700 font-bold py-2.5 px-5 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-0.5 text-sm font-['Plus_Jakarta_Sans'] border border-amber-100"
+              className="bg-white text-amber-600 hover:text-amber-700 font-bold py-2 px-4 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-0.5 text-xs font-['Plus_Jakarta_Sans'] border border-amber-100"
             >
               + Add Review
             </Link>

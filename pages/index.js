@@ -93,27 +93,27 @@ export default function HomePage() {
 
   return (
     <Layout title="Rate Lowry - Food Reviews at Lowry Cafeteria" description="Find and rate food items at Lowry Cafeteria dining hall">
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 mb-12 overflow-hidden transform transition-all hover:shadow-2xl duration-500">
-        <div className="p-10 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 relative">
+      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 mb-8 overflow-hidden transform transition-all hover:shadow-2xl duration-500">
+        <div className="p-6 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 relative">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
           <div className="relative z-10">
-            <span className="inline-block py-1 px-3 rounded-full bg-amber-100 text-amber-600 text-xs font-bold tracking-wider uppercase mb-3">Wooster Dining</span>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 font-['Plus_Jakarta_Sans'] tracking-tight leading-tight">
+            <span className="inline-block py-1 px-3 rounded-full bg-amber-100 text-amber-600 text-xs font-bold tracking-wider uppercase mb-2">Wooster Dining</span>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 font-['Plus_Jakarta_Sans'] tracking-tight leading-tight">
               Find & Rate Food at <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">Lowry</span>
             </h1>
-            <p className="text-gray-600 mb-8 max-w-2xl text-lg leading-relaxed">
+            <p className="text-gray-600 mb-4 max-w-2xl text-base leading-relaxed">
               See what others are saying about the food options at Lowry Cafeteria and share your own culinary experiences.
             </p>
           </div>
         </div>
 
-        <div className="px-10 py-8 bg-white border-t border-gray-100 relative">
+        <div className="px-6 py-4 bg-white border-t border-gray-100 relative">
           <div className="max-w-4xl relative">
-            <h2 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-4">Filter by Station</h2>
-            <div className="flex flex-wrap gap-3">
+            <h2 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Filter by Station</h2>
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedStation('all')}
-                className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 ${selectedStation === 'all'
+                className={`px-4 py-2 rounded-full font-semibold text-xs transition-all duration-200 ${selectedStation === 'all'
                   ? 'bg-gray-900 text-white shadow-lg transform -translate-y-0.5'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                   }`}
@@ -125,7 +125,7 @@ export default function HomePage() {
                 <button
                   key={station._id}
                   onClick={() => setSelectedStation(station.name)}
-                  className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 ${selectedStation === station.name
+                  className={`px-4 py-2 rounded-full font-semibold text-xs transition-all duration-200 ${selectedStation === station.name
                     ? 'bg-gray-900 text-white shadow-lg transform -translate-y-0.5'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                     }`}
