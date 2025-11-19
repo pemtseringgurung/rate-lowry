@@ -12,7 +12,7 @@ export default function NewReview() {
   const [uploadStatus, setUploadStatus] = useState({ loading: false, error: null });
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  
+
   const [formData, setFormData] = useState({
     foodItem: '',
     station: '',
@@ -22,7 +22,6 @@ export default function NewReview() {
     imageUrl: ''
   });
 
-  // Update form data when URL parameters change
   useEffect(() => {
     if (initialFoodItem) {
       setFormData(prev => ({ ...prev, foodItem: initialFoodItem }));
@@ -32,7 +31,6 @@ export default function NewReview() {
     }
   }, [initialFoodItem, initialStation]);
 
-  // Fetch available stations
   useEffect(() => {
     const fetchStations = async () => {
       try {
@@ -44,7 +42,6 @@ export default function NewReview() {
         setStations(data);
       } catch (error) {
         console.error('Error fetching stations:', error);
-        setError('Failed to load stations. Please try again later.');
       }
     };
 
@@ -53,28 +50,27 @@ export default function NewReview() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'rating' ? parseInt(value, 10) : value
-    });
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'rating' ? parseInt(value) : value
+    }));
   };
 
-  const handleImageChange = async (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Create a preview
+    // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
 
-    // Upload the image
-    const formData = new FormData();
-    formData.append('image', file);
-
     setUploadStatus({ loading: true, error: null });
+
+    const formData = new FormData();
+    formData.append('file', file);
 
     try {
       const response = await fetch('/api/upload', {
@@ -83,24 +79,15 @@ export default function NewReview() {
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to upload image');
+        throw new Error('Failed to upload image');
       }
 
       const data = await response.json();
-      setFormData(prev => ({ ...prev, imageUrl: data.imageUrl }));
+      setFormData(prev => ({ ...prev, imageUrl: data.url }));
       setUploadStatus({ loading: false, error: null });
     } catch (error) {
       console.error('Error uploading image:', error);
-      setUploadStatus({ loading: false, error: error.message });
-    }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
-    setFormData(prev => ({ ...prev, imageUrl: '' }));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      setUploadStatus({ loading: false, error: 'Failed to upload image. Please try again.' });
     }
   };
 
@@ -108,265 +95,228 @@ export default function NewReview() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
-      // Use "Anonymous" as default if reviewer field is empty
-      const reviewerName = formData.reviewer.trim() || "Anonymous";
-      
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          reviewer: reviewerName,
-          createdAt: new Date()
-        }),
+        body: JSON.stringify(formData),
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to submit review');
+        throw new Error('Failed to submit review');
       }
-      
-      // Redirect to the food item page
-      router.push(`/food/${encodeURIComponent(formData.foodItem)}?station=${encodeURIComponent(formData.station)}`);
+
+      router.push('/');
     } catch (error) {
       console.error('Error submitting review:', error);
-      setError(error.message);
+      setError('Failed to submit review. Please try again.');
       setLoading(false);
     }
   };
 
   return (
     <Layout title="Add a New Review - Rate Lowry" description="Add a new food review at Lowry dining hall">
-      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 rounded-2xl"></div>
-        <div className="relative">
-          <div className="flex items-center mb-8">
-            <div className="bg-gradient-to-br from-amber-500 to-yellow-400 p-3 rounded-lg shadow-md mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800 font-['Plus_Jakarta_Sans']">Add a New Review</h1>
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-8">
+          <Link href="/" className="text-amber-600 hover:text-amber-700 font-medium flex items-center transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            </svg>
+            Back to Home
+          </Link>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+            <h1 className="text-3xl font-bold relative z-10 font-['Plus_Jakarta_Sans']">Add a Review</h1>
+            <p className="text-amber-100 mt-2 relative z-10">Share your thoughts on the food at Lowry!</p>
           </div>
-          
-          {error && (
-            <div className="bg-red-50 text-red-600 p-4 mb-6 rounded-xl border border-red-100">
-              <div className="flex items-center mb-1">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+
+          <div className="p-8 md:p-10">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
-                <span className="font-semibold">Error</span>
+                {error}
               </div>
-              <p>{error}</p>
-            </div>
-          )}
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="foodItem" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Food Item Name
-              </label>
-              <input
-                type="text"
-                id="foodItem"
-                name="foodItem"
-                value={formData.foodItem}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
-                placeholder="e.g., Pizza, Pasta, Salad"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="station" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Food Station
-              </label>
-              <div className="relative">
-                <select
-                  id="station"
-                  name="station"
-                  value={formData.station}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent appearance-none bg-white text-gray-800"
-                >
-                  <option value="" className="text-gray-800">Select a station</option>
-                  {/* Use hardcoded station options in case the API fails */}
-                  {stations.length > 0 ? (
-                    stations.map((station) => (
-                      <option key={station._id} value={station.name} className="text-gray-800">
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="foodItem" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                    Food Item
+                  </label>
+                  <input
+                    type="text"
+                    id="foodItem"
+                    name="foodItem"
+                    value={formData.foodItem}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all outline-none bg-gray-50 focus:bg-white"
+                    placeholder="e.g. Pepperoni Pizza"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="station" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                    Station
+                  </label>
+                  <select
+                    id="station"
+                    name="station"
+                    value={formData.station}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all outline-none bg-gray-50 focus:bg-white appearance-none"
+                  >
+                    <option value="">Select a station</option>
+                    {stations.map((station) => (
+                      <option key={station._id} value={station.name}>
                         {station.name}
                       </option>
-                    ))
-                  ) : (
-                    ['Garden & Provisions', 'Hearth 66', 'Globe Wooster', 'Lemongrass', 'Zone', 'The Garden', 'The Kitchen Table', 'Mom\'s Kitchen'].map((station) => (
-                      <option key={station} value={station} className="text-gray-800">
-                        {station}
-                      </option>
-                    ))
-                  )}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
+                    ))}
+                  </select>
                 </div>
               </div>
-            </div>
-            
-            <div>
-              <span className="block mb-3 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Your Rating
-              </span>
-              <div className="flex flex-wrap gap-3">
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <label key={value} className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="rating"
-                      value={value}
-                      checked={formData.rating === value}
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
-                    <div className={`flex items-center justify-center w-12 h-12 text-lg font-bold transition-all rounded-full ${
-                      formData.rating === value 
-                        ? 'bg-gradient-to-br from-amber-500 to-yellow-400 text-white ring-2 ring-amber-300 ring-offset-2'
-                        : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                    }`}>
-                      {value}
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </div>
-            
-            <div>
-              <label htmlFor="comment" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Your Comment
-              </label>
-              <textarea
-                id="comment"
-                name="comment"
-                value={formData.comment}
-                onChange={handleChange}
-                required
-                rows="4"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
-                placeholder="How was the food? What did you like or dislike about it?"
-              ></textarea>
-            </div>
-            
-            <div>
-              <label className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Add Photo <span className="text-gray-500 font-normal">(optional)</span>
-              </label>
+
               <div className="space-y-3">
-                {imagePreview ? (
-                  <div className="relative">
-                    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden p-2">
-                      <img 
-                        src={imagePreview} 
-                        alt="Food preview" 
-                        width="800"
-                        height="600"
-                        className="h-auto w-full object-contain"
-                        style={{ maxWidth: '100%', background: 'white', maxHeight: '400px' }}
-                      />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors shadow-md"
+                <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Rating
+                </label>
+                <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, rating: star }))}
+                      className="focus:outline-none transform transition-transform hover:scale-110"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-10 w-10 ${formData.rating >= star ? 'text-amber-400 fill-current' : 'text-gray-300'}`}
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={formData.rating >= star ? 0 : 1.5}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col w-full h-48 border-2 border-dashed border-amber-300 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg className="w-14 h-14 mb-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <p className="mb-2 text-sm text-gray-700">
-                          <span className="font-semibold">Click to upload a photo</span> or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
-                      </div>
-                      <input 
-                        type="file" 
-                        className="hidden" 
-                        accept="image/*"
-                        ref={fileInputRef}
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </div>
-                )}
-                
-                {uploadStatus.loading && (
-                  <div className="flex items-center space-x-2 text-amber-600 bg-amber-50 p-3 rounded-lg">
-                    <div className="w-5 h-5 border-2 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p>Uploading your image...</p>
-                  </div>
-                )}
-                
-                {uploadStatus.error && (
-                  <div className="text-red-600 bg-red-50 p-3 rounded-lg">
-                    <p>Error: {uploadStatus.error}</p>
-                  </div>
-                )}
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                    </button>
+                  ))}
+                  <span className="ml-4 text-lg font-bold text-gray-700 bg-white px-3 py-1 rounded-lg shadow-sm border border-gray-100">
+                    {formData.rating}/5
+                  </span>
+                </div>
               </div>
-            </div>
-            
-            <div>
-              <label htmlFor="reviewer" className="block mb-2 font-medium text-gray-700 font-['Plus_Jakarta_Sans']">
-                Your Name <span className="text-gray-500 font-normal">(optional)</span>
-              </label>
-              <input
-                type="text"
-                id="reviewer"
-                name="reviewer"
-                value={formData.reviewer}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-gray-800"
-                placeholder="Leave blank to post anonymously"
-              />
-            </div>
-            
-            <div className="flex gap-4 pt-4">
-              <button
-                type="submit"
-                disabled={loading || uploadStatus.loading}
-                className={`flex-1 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-sm ${
-                  (loading || uploadStatus.loading) ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Submitting...
+
+              <div className="space-y-2">
+                <label htmlFor="comment" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Comment (Optional)
+                </label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  value={formData.comment}
+                  onChange={handleChange}
+                  rows="4"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all outline-none bg-gray-50 focus:bg-white resize-none"
+                  placeholder="What did you think about the food?"
+                ></textarea>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="reviewer" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Your Name (Optional)
+                </label>
+                <input
+                  type="text"
+                  id="reviewer"
+                  name="reviewer"
+                  value={formData.reviewer}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all outline-none bg-gray-50 focus:bg-white"
+                  placeholder="Anonymous"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+                  Photo (Optional)
+                </label>
+
+                <div className="flex items-center space-x-4">
+                  <div
+                    onClick={() => fileInputRef.current.click()}
+                    className="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-amber-500 hover:bg-amber-50 transition-all group overflow-hidden relative bg-gray-50"
+                  >
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400 group-hover:text-amber-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="text-xs text-gray-500 group-hover:text-amber-600 font-medium">Add Photo</span>
+                      </>
+                    )}
+
+                    {uploadStatus.loading && (
+                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
                   </div>
-                ) : 'Submit Review'}
-              </button>
-              <Link
-                href="/"
-                className="flex-1 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg transition-all text-center border border-gray-200"
-              >
-                Cancel
-              </Link>
-            </div>
-          </form>
+
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageUpload}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    <p className="text-sm text-gray-500 mb-2">Upload a photo of your meal to help others see what it looks like.</p>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current.click()}
+                      className="text-sm text-amber-600 font-bold hover:text-amber-700 hover:underline"
+                    >
+                      Choose a file
+                    </button>
+                  </div>
+                </div>
+                {uploadStatus.error && <p className="text-red-500 text-sm mt-1">{uploadStatus.error}</p>}
+              </div>
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={loading || uploadStatus.loading}
+                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-amber-500/30 transition-all transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 ${(loading || uploadStatus.loading) ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Submitting...
+                    </span>
+                  ) : 'Submit Review'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </Layout>
   );
-} 
+}
